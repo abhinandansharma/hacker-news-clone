@@ -22,28 +22,28 @@ export default function Pagination({ currentPage, totalPages, baseUrl }: Paginat
   }
 
   return (
-    <nav className="flex items-center justify-center mt-12 mb-8" aria-label="Pagination">
-      <div className="flex items-center gap-x-12">
+    <nav className="flex items-center justify-center mt-32 mb-16" aria-label="Pagination">
+      <div className="flex items-center gap-x-16">
         {currentPage > 1 && (
           <Link
             href={`${baseUrl}?page=${currentPage - 1}`}
-            className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:border-gray-400 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm"
+            className="px-3 py-1.5 text-sm font-medium text-[rgb(var(--accent-rgb))] bg-[rgb(var(--card-bg))] border border-[rgb(var(--border-rgb))] rounded-md hover:bg-[rgb(var(--border-rgb))] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgb(var(--accent-rgb))] shadow-sm"
           >
             Previous
           </Link>
         )}
 
-        <div className="flex items-center gap-x-6">
+        <div className="flex items-center gap-x-4">
           {visiblePages[0] > 1 && (
             <>
               <Link
                 href={`${baseUrl}?page=1`}
-                className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:border-gray-400 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm"
+                className="px-3 py-1.5 text-sm font-medium text-[rgb(var(--accent-rgb))] bg-[rgb(var(--card-bg))] border border-[rgb(var(--border-rgb))] rounded-md hover:bg-[rgb(var(--border-rgb))] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgb(var(--accent-rgb))] shadow-sm"
               >
                 1
               </Link>
               {visiblePages[0] > 2 && (
-                <span className="px-4 py-2 text-sm font-medium text-gray-900">...</span>
+                <span className="px-3 py-1.5 text-sm font-medium text-gray-400">...</span>
               )}
             </>
           )}
@@ -52,10 +52,10 @@ export default function Pagination({ currentPage, totalPages, baseUrl }: Paginat
             <Link
               key={page}
               href={`${baseUrl}?page=${page}`}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm ${
+              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgb(var(--accent-rgb))] shadow-sm ${
                 page === currentPage
-                  ? 'bg-blue-600 text-white border border-blue-600 hover:bg-blue-700'
-                  : 'text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 hover:border-gray-400'
+                  ? 'bg-[rgb(var(--accent-rgb))] text-white border border-[rgb(var(--accent-rgb))] hover:bg-opacity-90'
+                  : 'text-[rgb(var(--accent-rgb))] bg-[rgb(var(--card-bg))] border border-[rgb(var(--border-rgb))] hover:bg-[rgb(var(--border-rgb))]'
               }`}
             >
               {page}
@@ -65,11 +65,11 @@ export default function Pagination({ currentPage, totalPages, baseUrl }: Paginat
           {visiblePages[visiblePages.length - 1] < totalPages && (
             <>
               {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
-                <span className="px-4 py-2 text-sm font-medium text-gray-900">...</span>
+                <span className="px-3 py-1.5 text-sm font-medium text-gray-400">...</span>
               )}
               <Link
                 href={`${baseUrl}?page=${totalPages}`}
-                className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:border-gray-400 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm"
+                className="px-3 py-1.5 text-sm font-medium text-[rgb(var(--accent-rgb))] bg-[rgb(var(--card-bg))] border border-[rgb(var(--border-rgb))] rounded-md hover:bg-[rgb(var(--border-rgb))] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgb(var(--accent-rgb))] shadow-sm"
               >
                 {totalPages}
               </Link>
@@ -80,7 +80,7 @@ export default function Pagination({ currentPage, totalPages, baseUrl }: Paginat
         {currentPage < totalPages && (
           <Link
             href={`${baseUrl}?page=${currentPage + 1}`}
-            className="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-md hover:bg-gray-100 hover:border-gray-400 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm"
+            className="px-3 py-1.5 text-sm font-medium text-[rgb(var(--accent-rgb))] bg-[rgb(var(--card-bg))] border border-[rgb(var(--border-rgb))] rounded-md hover:bg-[rgb(var(--border-rgb))] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgb(var(--accent-rgb))] shadow-sm"
           >
             Next
           </Link>

@@ -8,80 +8,56 @@ const fetchConfig = {
   },
 };
 
-export async function getTopStories(page: number) {
-  const start = (page - 1) * ITEMS_PER_PAGE;
-  const end = start + ITEMS_PER_PAGE;
-  
-  const response = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json', fetchConfig);
-  if (!response.ok) {
-    throw new Error('Failed to fetch top stories');
+async function fetchStories(endpoint: string, page: number) {
+  try {
+    const start = (page - 1) * ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
+    
+    const response = await fetch(`https://hacker-news.firebaseio.com/v0/${endpoint}.json`, fetchConfig);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${endpoint}`);
+    }
+    const storyIds = await response.json();
+    
+    const stories = await Promise.all(
+      storyIds.slice(start, end).map(async (id: number) => {
+        try {
+          const storyResponse = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`, fetchConfig);
+          if (!storyResponse.ok) {
+            throw new Error(`Failed to fetch story ${id}`);
+          }
+          return storyResponse.json();
+        } catch (error) {
+          console.error(`Error fetching story ${id}:`, error);
+          return null;
+        }
+      })
+    );
+    
+    // Filter out any null stories (failed fetches)
+    const validStories = stories.filter(story => story !== null);
+    
+    return {
+      stories: validStories,
+      totalPages: Math.ceil(TOTAL_ITEMS / ITEMS_PER_PAGE)
+    };
+  } catch (error) {
+    console.error(`Error in fetchStories:`, error);
+    return {
+      stories: [],
+      totalPages: 0
+    };
   }
-  const storyIds = await response.json();
-  
-  const stories = await Promise.all(
-    storyIds.slice(start, end).map(async (id: number) => {
-      const storyResponse = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`, fetchConfig);
-      if (!storyResponse.ok) {
-        throw new Error(`Failed to fetch story ${id}`);
-      }
-      return storyResponse.json();
-    })
-  );
-  
-  return {
-    stories,
-    totalPages: Math.ceil(TOTAL_ITEMS / ITEMS_PER_PAGE)
-  };
+}
+
+export async function getTopStories(page: number) {
+  return fetchStories('topstories', page);
 }
 
 export async function getNewStories(page: number) {
-  const start = (page - 1) * ITEMS_PER_PAGE;
-  const end = start + ITEMS_PER_PAGE;
-  
-  const response = await fetch('https://hacker-news.firebaseio.com/v0/newstories.json', fetchConfig);
-  if (!response.ok) {
-    throw new Error('Failed to fetch new stories');
-  }
-  const storyIds = await response.json();
-  
-  const stories = await Promise.all(
-    storyIds.slice(start, end).map(async (id: number) => {
-      const storyResponse = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`, fetchConfig);
-      if (!storyResponse.ok) {
-        throw new Error(`Failed to fetch story ${id}`);
-      }
-      return storyResponse.json();
-    })
-  );
-  
-  return {
-    stories,
-    totalPages: Math.ceil(TOTAL_ITEMS / ITEMS_PER_PAGE)
-  };
+  return fetchStories('newstories', page);
 }
 
 export async function getBestStories(page: number) {
-  const start = (page - 1) * ITEMS_PER_PAGE;
-  const end = start + ITEMS_PER_PAGE;
-  
-  const response = await fetch('https://hacker-news.firebaseio.com/v0/beststories.json', fetchConfig);
-  if (!response.ok) {
-    throw new Error('Failed to fetch best stories');
-  }
-  const storyIds = await response.json();
-  
-  const stories = await Promise.all(
-    storyIds.slice(start, end).map(async (id: number) => {
-      const storyResponse = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`, fetchConfig);
-      if (!storyResponse.ok) {
-        throw new Error(`Failed to fetch story ${id}`);
-      }
-      return storyResponse.json();
-    })
-  );
-  
-  return {
-    stories,
-    totalPages: Math.ceil(TOTAL_ITEMS / ITEMS_PER_PAGE)
-  };
+  return fetchStories('beststories', page);
 } 

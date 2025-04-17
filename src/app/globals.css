@@ -3,12 +3,45 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 51, 51, 51;
-  --background-start-rgb: 246, 246, 239;
-  --background-end-rgb: 246, 246, 239;
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 40, 42, 54;
+  --accent-rgb: 189, 147, 249;
+  --border-rgb: 68, 71, 90;
+  --card-bg: 40, 42, 54;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
+  background: rgb(var(--background-rgb));
+  min-height: 100vh;
+}
+
+@layer components {
+  .card {
+    @apply bg-[rgb(var(--card-bg))]/50 backdrop-blur-sm rounded-lg shadow-sm border border-[rgb(var(--border-rgb))];
+  }
+  
+  .btn {
+    @apply px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgb(var(--accent-rgb))] shadow-sm;
+  }
+  
+  .btn-primary {
+    @apply bg-[rgb(var(--accent-rgb))] text-white border border-[rgb(var(--accent-rgb))] hover:bg-opacity-90;
+  }
+  
+  .btn-secondary {
+    @apply text-gray-100 bg-[rgb(var(--card-bg))] border border-[rgb(var(--border-rgb))] hover:bg-[rgb(var(--border-rgb))];
+  }
+
+  .nav-link {
+    @apply inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200;
+  }
+
+  .nav-link-active {
+    @apply border-[rgb(var(--accent-rgb))] text-[rgb(var(--accent-rgb))];
+  }
+
+  .nav-link-inactive {
+    @apply border-transparent text-gray-400 hover:border-gray-600 hover:text-gray-200;
+  }
 }
