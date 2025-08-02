@@ -7,7 +7,6 @@ export default async function NewStories() {
   return (
     <StoryList
       stories={stories}
-      currentPage={1}
       totalPages={totalPages}
       baseUrl="/new"
     />

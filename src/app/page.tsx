@@ -7,7 +7,6 @@ export default async function Home() {
   return (
     <StoryList
       stories={stories}
-      currentPage={1}
       totalPages={totalPages}
       baseUrl="/"
     />
