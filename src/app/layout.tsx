@@ -1,29 +1,38 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Newsreader } from 'next/font/google';
 import Link from 'next/link';
 import NavLink from '@/components/NavLink';
+import ThemeToggle from '@/components/ThemeToggle';
 import { FEEDS } from '@/types/hackernews';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], display: 'swap' });
+const serif = Newsreader({ subsets: ['latin'], weight: ['400', '500', '600'], display: 'swap', variable: '--font-serif' });
+
+const description = 'A fast Hacker News reader: Top, New, Best, Ask, Show and Jobs from the official API, with working pagination and a paper theme.';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://abhinandansharma.github.io/hacker-news-clone/'),
   title: 'Hacker News Reader',
-  description: 'A fast Hacker News reader: Top, New, Best, Ask, Show and Jobs from the official API, with working pagination.',
+  description,
+  openGraph: { type: 'website', url: 'https://abhinandansharma.github.io/hacker-news-clone/', title: 'Hacker News Reader', description, images: [{ url: 'og.png', width: 1200, height: 630 }] },
+  twitter: { card: 'summary_large_image', creator: '@notjustadev', title: 'Hacker News Reader', description, images: ['og.png'] },
+  icons: { icon: 'favicon.ico' },
 };
 
-export const viewport: Viewport = { themeColor: '#ff6600' };
+export const viewport: Viewport = { themeColor: '#f4f1e8' };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${serif.variable}`}>
         <header className="hdr">
           <div className="wrap hdr-inner">
             <Link href="/" className="mark"><i>Y</i><span>Hacker News</span></Link>
             <nav className="tabs" aria-label="Feeds">
               {FEEDS.map((f) => <NavLink key={f.type} href={f.path}>{f.label}</NavLink>)}
             </nav>
+            <ThemeToggle />
           </div>
         </header>
         <main className="wrap">{children}</main>
