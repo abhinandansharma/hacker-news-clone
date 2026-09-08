@@ -48,7 +48,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .tabs::-webkit-scrollbar { display: none; }
 .tab { padding: 0.65rem 0.85rem; min-height: 2.75rem; display: inline-flex; align-items: center; border-radius: 4px; font-size: 0.875rem; font-weight: 500; color: var(--muted); white-space: nowrap; transition: background-color 0.15s, color 0.15s; }
 .tab:hover { color: var(--text); background: var(--line); }
-.tab.on { color: var(--accent); background: var(--accent-soft); }
+.tab.on { color: var(--accent-strong); background: var(--accent-soft); }
 
 /* list */
 .list { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-top: 1.5rem; box-shadow: 0 1px 0 rgba(0,0,0,0.03), 0 12px 30px -20px rgba(60, 40, 10, 0.35); }
