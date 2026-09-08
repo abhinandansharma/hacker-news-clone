@@ -39,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <span>Data from the <a href="https://github.com/HackerNews/API" target="_blank" rel="noreferrer">official Hacker News API</a>. Not affiliated with Y Combinator.</span>
           <span>Built by <a href="https://abhinandansharma.github.io/portfolio/" target="_blank" rel="noreferrer">Abhinandan Sharma</a> · <a href="https://github.com/abhinandansharma/hacker-news-clone" target="_blank" rel="noreferrer">Source</a></span>
         </footer>
+        <a className="made-by" href="https://abhinandansharma.github.io/portfolio/" target="_blank" rel="noreferrer" aria-label="Made by Abhinandan Sharma. Opens the portfolio."><span className="made-by-dot"></span>Made by Abhinandan <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       </body>
     </html>
   );
