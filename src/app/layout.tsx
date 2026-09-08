@@ -1,49 +1,37 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import NavLink from '@/components/NavLink';
+import { FEEDS } from '@/types/hackernews';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Hacker News Clone',
-  description: 'A modern clone of Hacker News built with Next.js',
+  title: 'Hacker News Reader',
+  description: 'A fast Hacker News reader: Top, New, Best, Ask, Show and Jobs from the official API, with working pagination.',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" className="h-full">
-      <body className={`${inter.className} h-full`}>
-        <div className="min-h-full">
-          <nav className="bg-[rgb(var(--card-bg))]/80 backdrop-blur-sm border-b border-[rgb(var(--border-rgb))] sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between h-16">
-                <div className="flex">
-                  <div className="flex-shrink-0 flex items-center">
-                    <Link href="/" className="text-xl font-bold text-[rgb(var(--accent-rgb))]">
-                      HN
-                    </Link>
-                  </div>
-                  <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                    <NavLink href="/">Top</NavLink>
-                    <NavLink href="/new">New</NavLink>
-                    <NavLink href="/best">Best</NavLink>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </nav>
+export const viewport: Viewport = { themeColor: '#ff6600' };
 
-          <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            {children}
-          </main>
-        </div>
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <header className="hdr">
+          <div className="wrap hdr-inner">
+            <Link href="/" className="mark"><i>Y</i><span>Hacker News</span></Link>
+            <nav className="tabs" aria-label="Feeds">
+              {FEEDS.map((f) => <NavLink key={f.type} href={f.path}>{f.label}</NavLink>)}
+            </nav>
+          </div>
+        </header>
+        <main className="wrap">{children}</main>
+        <footer className="wrap ftr">
+          <span>Data from the <a href="https://github.com/HackerNews/API" target="_blank" rel="noreferrer">official Hacker News API</a>. Not affiliated with Y Combinator.</span>
+          <span>Built by <a href="https://abhinandansharma.github.io/portfolio/" target="_blank" rel="noreferrer">Abhinandan Sharma</a> · <a href="https://github.com/abhinandansharma/hacker-news-clone" target="_blank" rel="noreferrer">Source</a></span>
+        </footer>
       </body>
     </html>
   );
-} 
+}

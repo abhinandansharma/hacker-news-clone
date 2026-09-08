@@ -1,5 +1,5 @@
 import StoriesPage from '@/components/StoriesPage';
 
 export default function Page() {
-  return <StoriesPage type="best" baseUrl="/best/" />;
+  return <StoriesPage type="show" baseUrl="/show/" />;
 }

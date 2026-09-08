@@ -3,45 +3,85 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-rgb: 40, 42, 54;
-  --accent-rgb: 189, 147, 249;
-  --border-rgb: 68, 71, 90;
-  --card-bg: 40, 42, 54;
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --text: #16181d;
+  --muted: #6b7280;
+  --faint: #9ca3af;
+  --line: #e5e7eb;
+  --accent: #ff6600;
+  --accent-soft: rgba(255, 102, 0, 0.1);
+  --visited: #8b5e3c;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1012;
+    --surface: #16181c;
+    --text: #e7e7e5;
+    --muted: #9aa0a6;
+    --faint: #6b7076;
+    --line: #262a30;
+    --accent: #ff7a1a;
+    --accent-soft: rgba(255, 122, 26, 0.14);
+    --visited: #c9a27e;
+    color-scheme: dark;
+  }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
-  min-height: 100vh;
-}
+html { -webkit-text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--text); min-height: 100vh; font-feature-settings: 'tnum' 1; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 
-@layer components {
-  .card {
-    @apply bg-[rgb(var(--card-bg))]/50 backdrop-blur-sm rounded-lg shadow-sm border border-[rgb(var(--border-rgb))];
-  }
-  
-  .btn {
-    @apply px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgb(var(--accent-rgb))] shadow-sm;
-  }
-  
-  .btn-primary {
-    @apply bg-[rgb(var(--accent-rgb))] text-white border border-[rgb(var(--accent-rgb))] hover:bg-opacity-90;
-  }
-  
-  .btn-secondary {
-    @apply text-gray-100 bg-[rgb(var(--card-bg))] border border-[rgb(var(--border-rgb))] hover:bg-[rgb(var(--border-rgb))];
-  }
+.wrap { max-width: 52rem; margin: 0 auto; padding: 0 1rem; }
 
-  .nav-link {
-    @apply inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200;
-  }
+/* header */
+.hdr { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.hdr-inner { display: flex; align-items: center; gap: 1rem; height: 3.5rem; }
+.mark { display: inline-flex; align-items: center; gap: 0.6rem; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+.mark i { width: 1.5rem; height: 1.5rem; border-radius: 4px; background: var(--accent); color: #fff; display: inline-grid; place-items: center; font-style: normal; font-weight: 800; font-size: 0.95rem; }
+.tabs { display: flex; gap: 0.25rem; overflow-x: auto; scrollbar-width: none; margin-left: auto; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { padding: 0.4rem 0.7rem; border-radius: 999px; font-size: 0.875rem; font-weight: 500; color: var(--muted); white-space: nowrap; transition: background-color 0.15s, color 0.15s; }
+.tab:hover { color: var(--text); background: var(--line); }
+.tab.on { color: var(--accent); background: var(--accent-soft); }
 
-  .nav-link-active {
-    @apply border-[rgb(var(--accent-rgb))] text-[rgb(var(--accent-rgb))];
-  }
+/* list */
+.list { background: var(--surface); border: 1px solid var(--line); border-radius: 0.9rem; overflow: hidden; margin-top: 1.25rem; }
+.item { display: grid; grid-template-columns: 2.4rem 1fr; gap: 0.25rem 0.75rem; padding: 0.9rem 1rem; border-top: 1px solid var(--line); transition: background-color 0.15s; }
+.item:first-child { border-top: 0; }
+.item:hover { background: color-mix(in srgb, var(--surface) 70%, var(--bg)); }
+.rank { color: var(--faint); font-size: 0.85rem; text-align: right; padding-top: 0.15rem; font-variant-numeric: tabular-nums; }
+.title { font-size: 1rem; font-weight: 500; line-height: 1.35; color: var(--text); }
+.title:hover { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+.title:visited { color: var(--visited); }
+.domain { margin-left: 0.5rem; font-size: 0.78rem; color: var(--muted); white-space: nowrap; }
+.domain:hover { color: var(--accent); }
+.meta { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.9rem; font-size: 0.8rem; color: var(--muted); }
+.meta a:hover { color: var(--accent); }
+.meta svg { width: 0.85rem; height: 0.85rem; vertical-align: -2px; margin-right: 0.25rem; }
+.score { color: var(--accent); font-weight: 600; }
+.chip { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 0.1rem 0.4rem; margin-right: 0.5rem; vertical-align: 2px; }
 
-  .nav-link-inactive {
-    @apply border-transparent text-gray-400 hover:border-gray-600 hover:text-gray-200;
-  }
-}
+/* skeleton */
+.sk { display: grid; grid-template-columns: 2.4rem 1fr; gap: 0.5rem 0.75rem; padding: 1rem; border-top: 1px solid var(--line); }
+.sk:first-child { border-top: 0; }
+.sk span { display: block; height: 0.8rem; border-radius: 4px; background: linear-gradient(90deg, var(--line) 25%, color-mix(in srgb, var(--line) 50%, var(--surface)) 50%, var(--line) 75%); background-size: 200% 100%; animation: sk 1.3s linear infinite; }
+@keyframes sk { to { background-position: -200% 0; } }
+
+/* pagination */
+.pager { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin: 1.25rem 0 3rem; font-size: 0.875rem; color: var(--muted); }
+.pager-btn { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.5rem 0.9rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--text); font-weight: 500; }
+.pager-btn:hover { border-color: var(--accent); color: var(--accent); }
+.pager-btn[aria-disabled='true'] { opacity: 0.4; pointer-events: none; }
+.pager-pages { display: flex; gap: 0.25rem; }
+.pager-pages a { min-width: 2rem; text-align: center; padding: 0.35rem 0.5rem; border-radius: 999px; color: var(--muted); }
+.pager-pages a:hover { background: var(--line); color: var(--text); }
+.pager-pages a.on { background: var(--accent); color: #fff; font-weight: 600; }
+
+.empty { padding: 3rem 1rem; text-align: center; color: var(--muted); }
+.empty button { color: var(--accent); text-decoration: underline; }
+
+footer.ftr { padding: 2rem 0 3rem; color: var(--faint); font-size: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+footer.ftr a { color: var(--muted); }
+footer.ftr a:hover { color: var(--accent); }

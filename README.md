@@ -1,6 +1,6 @@
 # Hacker News Clone
 
-A fast Hacker News reader on the Next.js App Router: Top, New and Best feeds from the
+A fast Hacker News reader on the Next.js App Router: Top, New, Best, Ask, Show and Jobs feeds from the
 official Firebase API, fetched in the browser with a small cache, 30 stories a page with
 working pagination, relative timestamps, dark mode.
 

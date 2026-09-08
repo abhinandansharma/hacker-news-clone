@@ -1,64 +1,39 @@
 'use client';
 
 import React from 'react';
-import { Story } from '@/types/hackernews';
+import type { Story } from '@/types/hackernews';
 import TimeAgo from './TimeAgo';
-import { ArrowUpIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
 
-interface StoryItemProps {
-  story: Story;
-  rank?: number;
-}
+const domainOf = (url?: string) => { try { return url ? new URL(url).hostname.replace(/^www\./, '') : ''; } catch { return ''; } };
 
-export default function StoryItem({ story, rank }: StoryItemProps) {
-  const getDomain = (url: string) => {
-    try {
-      return new URL(url).hostname;
-    } catch {
-      return '';
-    }
-  };
+export default function StoryItem({ story, rank }: { story: Story; rank: number }) {
+  const hn = `https://news.ycombinator.com/item?id=${story.id}`;
+  const href = story.url || hn;
+  const domain = domainOf(story.url);
+  const isJob = story.type === 'job';
+  const isAsk = !story.url && !isJob;
+  const comments = story.descendants ?? 0;
 
   return (
-    <div className="p-4 hover:bg-gray-50/50 dark:hover:bg-[#1F2937]/50 transition-colors duration-200">
-      <div className="flex items-baseline gap-2">
-        {rank !== undefined && <span className="w-7 shrink-0 text-right text-sm tabular-nums text-gray-400">{rank}.</span>}
-        <a
-          href={story.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-base font-medium text-[rgb(var(--accent-rgb))] hover:underline"
-        >
-          {story.title}
-        </a>
-        {story.url && (
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            ({getDomain(story.url)})
-          </span>
-        )}
+    <li className="item">
+      <span className="rank">{rank}</span>
+      <div>
+        {isJob && <span className="chip">hiring</span>}
+        {isAsk && <span className="chip">ask</span>}
+        <a href={href} target="_blank" rel="noopener noreferrer" className="title">{story.title}</a>
+        {domain && <a href={`https://news.ycombinator.com/from?site=${domain}`} target="_blank" rel="noopener noreferrer" className="domain">{domain}</a>}
       </div>
-      <div className="mt-2 flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-        <div className="flex items-center gap-1">
-          <ArrowUpIcon className="h-4 w-4" />
-          <span>{story.score} points</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <ChatBubbleLeftIcon className="h-4 w-4" />
-          <span>{story.descendants} comments</span>
-        </div>
-        <div>
-          by{' '}
-          <a
-            href={`https://news.ycombinator.com/user?id=${story.by}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[rgb(var(--accent-rgb))] hover:underline"
-          >
-            {story.by}
+      <div className="meta">
+        {!isJob && <span className="score"><svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 3l7 9h-4v5H7v-5H3z" /></svg>{story.score}</span>}
+        {!isJob && (
+          <a href={hn} target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M3 5h14v8H9l-4 3v-3H3z" /></svg>
+            {comments} {comments === 1 ? 'comment' : 'comments'}
           </a>
-        </div>
+        )}
+        <a href={`https://news.ycombinator.com/user?id=${story.by}`} target="_blank" rel="noopener noreferrer">{story.by}</a>
         <TimeAgo timestamp={story.time} />
       </div>
-    </div>
+    </li>
   );
-} 
+}

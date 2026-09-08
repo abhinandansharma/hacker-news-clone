@@ -3,40 +3,31 @@
 import React from 'react';
 import StoryItem from './StoryItem';
 import Pagination from './Pagination';
-import { Story } from '@/types/hackernews';
+import type { Story } from '@/types/hackernews';
 
-interface StoryListProps {
+interface Props {
   stories: Story[];
+  loading: boolean;
   totalPages: number;
+  currentPage: number;
   baseUrl: string;
-  startRank?: number;
-  currentPage?: number;
+  startRank: number;
 }
 
-export default function StoryList({ stories, totalPages, baseUrl, startRank = 0, currentPage = 1 }: StoryListProps) {
-
+export default function StoryList({ stories, loading, totalPages, currentPage, baseUrl, startRank }: Props) {
   return (
-    <div className="space-y-6">
-      <div className="bg-[rgb(var(--card-bg))]/50 backdrop-blur-sm rounded-lg shadow-sm border border-[rgb(var(--border-rgb))] p-4 relative overflow-hidden">
-        {/* Border glow effect */}
-        <div className="absolute inset-0 rounded-lg border border-[rgb(var(--accent-rgb),0.2)] pointer-events-none" />
-        <div className="absolute inset-0 rounded-lg border border-[rgb(var(--accent-rgb),0.1)] pointer-events-none" />
-        
-        <div className="relative">
-          {stories.length === 0 ? (
-            <div className="flex justify-center p-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[rgb(var(--accent-rgb))]"></div>
-            </div>
-          ) : (
-            <ul className="divide-y divide-[rgb(var(--border-rgb))]">
-              {stories.map((story, i) => (
-                <StoryItem key={story.id} story={story} rank={startRank + i + 1} />
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
+    <>
+      <ul className="list">
+        {loading && Array.from({ length: 12 }, (_, i) => (
+          <li key={i} className="sk" aria-hidden="true">
+            <span style={{ width: '1.6rem', marginLeft: 'auto' }} />
+            <div><span style={{ width: `${55 + ((i * 17) % 40)}%` }} /><span style={{ width: '38%', marginTop: '0.5rem', height: '0.65rem' }} /></div>
+          </li>
+        ))}
+        {!loading && stories.length === 0 && <li className="empty">Nothing here yet.</li>}
+        {!loading && stories.map((story, i) => <StoryItem key={story.id} story={story} rank={startRank + i + 1} />)}
+      </ul>
       <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl={baseUrl} />
-    </div>
+    </>
   );
-} 
+}

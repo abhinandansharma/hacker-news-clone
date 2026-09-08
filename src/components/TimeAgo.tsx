@@ -1,17 +1,9 @@
 'use client';
 
 import React from 'react';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNowStrict } from 'date-fns';
 
-interface TimeAgoProps {
-  timestamp: number;
-}
-
-export default function TimeAgo({ timestamp }: TimeAgoProps) {
+export default function TimeAgo({ timestamp }: { timestamp: number }) {
   const date = new Date(timestamp * 1000);
-  return (
-    <span className="text-gray-700">
-      {formatDistanceToNow(date, { addSuffix: true })}
-    </span>
-  );
-} 
+  return <time dateTime={date.toISOString()} title={date.toLocaleString()}>{formatDistanceToNowStrict(date, { addSuffix: true })}</time>;
+}

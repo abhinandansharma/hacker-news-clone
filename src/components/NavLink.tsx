@@ -3,21 +3,14 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-interface NavLinkProps {
-  href: string;
-  children: React.ReactNode;
-}
+const norm = (p: string) => (p.replace(/\/+$/, '') || '/');
 
-export default function NavLink({ href, children }: NavLinkProps) {
+export default function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   const pathname = usePathname();
-  const isActive = pathname === href;
-
+  const active = norm(pathname) === norm(href);
   return (
-    <Link
-      href={href}
-      className={`nav-link ${isActive ? 'nav-link-active' : 'nav-link-inactive'}`}
-    >
+    <Link href={href} className={`tab ${active ? 'on' : ''}`} aria-current={active ? 'page' : undefined}>
       {children}
     </Link>
   );
-} 
+}

@@ -1,30 +1,32 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import StoryList from './StoryList';
-import { useStories } from '@/hooks/useStories';
+import { PAGE_SIZE, useStories } from '@/hooks/useStories';
 import type { StoryType } from '@/types/hackernews';
 
 function Inner({ type, baseUrl }: { type: StoryType; baseUrl: string }) {
   const params = useSearchParams();
   const page = Math.max(1, Number(params.get('page')) || 1);
-  const { stories, loading, error, totalPages } = useStories(type, page);
+  const { stories, totalPages, loading, error } = useStories(type, page);
+
+  useEffect(() => { window.scrollTo({ top: 0 }); }, [page, type]);
 
   if (error) {
     return (
-      <div className="rounded-lg border border-[rgb(var(--border-rgb))] p-8 text-center text-sm text-gray-400">
-        Could not reach Hacker News ({error}). <button className="underline" onClick={() => location.reload()}>Retry</button>
+      <div className="list empty">
+        Could not reach Hacker News ({error}). <button onClick={() => location.reload()}>Try again</button>
       </div>
     );
   }
-  return <StoryList stories={loading ? [] : stories} totalPages={totalPages} baseUrl={baseUrl} startRank={(page - 1) * 30} currentPage={page} />;
+  return <StoryList stories={stories} loading={loading} totalPages={totalPages} currentPage={page} baseUrl={baseUrl} startRank={(page - 1) * PAGE_SIZE} />;
 }
 
-/** Client-rendered story list. useSearchParams needs a Suspense boundary for static export. */
+/** Client-rendered feed. useSearchParams needs a Suspense boundary for static export. */
 export default function StoriesPage(props: { type: StoryType; baseUrl: string }) {
   return (
-    <Suspense fallback={<div className="flex justify-center p-8"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[rgb(var(--accent-rgb))]" /></div>}>
+    <Suspense fallback={<StoryList stories={[]} loading totalPages={1} currentPage={1} baseUrl={props.baseUrl} startRank={0} />}>
       <Inner {...props} />
     </Suspense>
   );
