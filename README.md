@@ -6,6 +6,8 @@ working pagination, relative timestamps, and a dark mode that remembers itself.
 
 **Live:** https://abhinandansharma.github.io/hacker-news-clone/
 
+Each feed's first page is fetched at build time, so the static HTML already carries thirty stories and the browser refreshes them right after hydration. A scheduled workflow rebuilds every six hours to keep that snapshot fresh.
+
 ![Paper theme](screenshots/paper.png)
 
 ![Dark theme](screenshots/dark.png)
