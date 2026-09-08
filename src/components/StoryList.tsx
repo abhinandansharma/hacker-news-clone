@@ -4,17 +4,16 @@ import React from 'react';
 import StoryItem from './StoryItem';
 import Pagination from './Pagination';
 import { Story } from '@/types/hackernews';
-import { useSearchParams } from 'next/navigation';
 
 interface StoryListProps {
   stories: Story[];
   totalPages: number;
   baseUrl: string;
+  startRank?: number;
+  currentPage?: number;
 }
 
-export default function StoryList({ stories, totalPages, baseUrl }: StoryListProps) {
-  const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get('page')) || 1;
+export default function StoryList({ stories, totalPages, baseUrl, startRank = 0, currentPage = 1 }: StoryListProps) {
 
   return (
     <div className="space-y-6">
@@ -30,8 +29,8 @@ export default function StoryList({ stories, totalPages, baseUrl }: StoryListPro
             </div>
           ) : (
             <ul className="divide-y divide-[rgb(var(--border-rgb))]">
-              {stories.map((story) => (
-                <StoryItem key={story.id} story={story} />
+              {stories.map((story, i) => (
+                <StoryItem key={story.id} story={story} rank={startRank + i + 1} />
               ))}
             </ul>
           )}

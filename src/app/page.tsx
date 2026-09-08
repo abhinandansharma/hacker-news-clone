@@ -1,14 +1,5 @@
-import StoryList from '@/components/StoryList';
-import { getTopStories } from '@/lib/hackernews';
+import StoriesPage from '@/components/StoriesPage';
 
-export default async function Home() {
-  const { stories, totalPages } = await getTopStories(1);
-
-  return (
-    <StoryList
-      stories={stories}
-      totalPages={totalPages}
-      baseUrl="/"
-    />
-  );
-} 
+export default function Home() {
+  return <StoriesPage type="top" baseUrl="/" />;
+}

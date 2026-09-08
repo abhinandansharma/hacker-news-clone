@@ -1,14 +1,5 @@
-import StoryList from '@/components/StoryList';
-import { getNewStories } from '@/lib/hackernews';
+import StoriesPage from '@/components/StoriesPage';
 
-export default async function NewStories() {
-  const { stories, totalPages } = await getNewStories(1);
-
-  return (
-    <StoryList
-      stories={stories}
-      totalPages={totalPages}
-      baseUrl="/new"
-    />
-  );
-} 
+export default function NewStories() {
+  return <StoriesPage type="new" baseUrl="/new/" />;
+}

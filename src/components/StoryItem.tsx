@@ -7,9 +7,10 @@ import { ArrowUpIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
 
 interface StoryItemProps {
   story: Story;
+  rank?: number;
 }
 
-export default function StoryItem({ story }: StoryItemProps) {
+export default function StoryItem({ story, rank }: StoryItemProps) {
   const getDomain = (url: string) => {
     try {
       return new URL(url).hostname;
@@ -21,6 +22,7 @@ export default function StoryItem({ story }: StoryItemProps) {
   return (
     <div className="p-4 hover:bg-gray-50/50 dark:hover:bg-[#1F2937]/50 transition-colors duration-200">
       <div className="flex items-baseline gap-2">
+        {rank !== undefined && <span className="w-7 shrink-0 text-right text-sm tabular-nums text-gray-400">{rank}.</span>}
         <a
           href={story.url}
           target="_blank"

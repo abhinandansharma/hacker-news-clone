@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: 'export',
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? '/hacker-news-clone',
+  trailingSlash: true,
+  images: { unoptimized: true },
 };
 
 export default nextConfig;
