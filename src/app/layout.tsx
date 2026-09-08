@@ -24,6 +24,10 @@ export const viewport: Viewport = { themeColor: '#f4f1e8' };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://hacker-news.firebaseio.com" />
+        <link rel="preload" href="https://hacker-news.firebaseio.com/v0/topstories.json" as="fetch" crossOrigin="anonymous" />
+      </head>
       <body className={`${inter.className} ${serif.variable}`}>
         <header className="hdr">
           <div className="wrap hdr-inner">
