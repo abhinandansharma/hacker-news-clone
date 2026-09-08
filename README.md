@@ -1,10 +1,14 @@
-# Hacker News Clone
+# Hacker News Reader
 
-A fast Hacker News reader on the Next.js App Router: Top, New, Best, Ask, Show and Jobs feeds from the
+A paper-themed Hacker News reader on the Next.js App Router: Top, New, Best, Ask, Show and Jobs feeds from the
 official Firebase API, fetched in the browser with a small cache, 30 stories a page with
-working pagination, relative timestamps, dark mode.
+working pagination, relative timestamps, and a dark mode that remembers itself.
 
 **Live:** https://abhinandansharma.github.io/hacker-news-clone/
+
+![Paper theme](screenshots/paper.png)
+
+![Dark theme](screenshots/dark.png)
 
 ## Stack
 
