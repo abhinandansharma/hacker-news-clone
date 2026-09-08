@@ -59,7 +59,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .domain:hover { color: var(--accent); }
 .meta { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.9rem; font-size: 0.8rem; color: var(--muted); }
 .meta a:hover { color: var(--accent); }
-.meta svg { width: 0.85rem; height: 0.85rem; vertical-align: -2px; margin-right: 0.25rem; }
+.meta svg { display: inline-block; width: 0.85rem; height: 0.85rem; vertical-align: -2px; margin-right: 0.25rem; }
 .score { color: var(--accent); font-weight: 600; }
 .chip { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 0.1rem 0.4rem; margin-right: 0.5rem; vertical-align: 2px; }
 
