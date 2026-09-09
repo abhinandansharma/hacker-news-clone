@@ -12,21 +12,35 @@ interface Props {
   currentPage: number;
   baseUrl: string;
   startRank: number;
+  /** Stories in the live feed that are not on screen yet. */
+  pendingCount?: number;
+  hasPending?: boolean;
+  onApplyPending?: () => void;
 }
 
-export default function StoryList({ stories, loading, totalPages, currentPage, baseUrl, startRank }: Props) {
+const SKELETON = 30;
+
+export default function StoryList({ stories, loading, totalPages, currentPage, baseUrl, startRank, pendingCount = 0, hasPending = false, onApplyPending }: Props) {
   return (
     <>
-      <ul className="list">
-        {loading && Array.from({ length: 12 }, (_, i) => (
+      <div className="list-top" aria-live="polite">
+        {hasPending && (
+          <button type="button" className="btn btn-live" onClick={onApplyPending}>
+            <i aria-hidden="true" />
+            {pendingCount > 0 ? <>{pendingCount} new {pendingCount === 1 ? 'story' : 'stories'}. Show the latest order</> : <>The order changed. Show the latest order</>}
+          </button>
+        )}
+      </div>
+      <ol className="list" start={startRank + 1}>
+        {loading && Array.from({ length: SKELETON }, (_, i) => (
           <li key={i} className="sk" aria-hidden="true">
-            <span style={{ width: '1.6rem', marginLeft: 'auto' }} />
-            <div><span style={{ width: `${55 + ((i * 17) % 40)}%` }} /><span style={{ width: '38%', marginTop: '0.5rem', height: '0.65rem' }} /></div>
+            <span className="sk-rank" />
+            <div><span style={{ width: `${48 + ((i * 23) % 44)}%` }} /><span className="sk-meta" /></div>
           </li>
         ))}
-        {!loading && stories.length === 0 && <li className="empty">Nothing here yet.</li>}
+        {!loading && stories.length === 0 && <li className="notice">Nothing here yet.</li>}
         {!loading && stories.map((story, i) => <StoryItem key={story.id} story={story} rank={startRank + i + 1} />)}
-      </ul>
+      </ol>
       <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl={baseUrl} />
     </>
   );

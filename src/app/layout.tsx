@@ -1,13 +1,14 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Newsreader } from 'next/font/google';
+import { Space_Grotesk } from 'next/font/google';
+import localFont from 'next/font/local';
 import Link from 'next/link';
 import NavLink from '@/components/NavLink';
 import ThemeToggle from '@/components/ThemeToggle';
 import { FEEDS } from '@/types/hackernews';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'], display: 'swap' });
-const serif = Newsreader({ subsets: ['latin'], weight: ['400', '500', '600'], display: 'swap', variable: '--font-serif' });
+const grotesk = Space_Grotesk({ subsets: ['latin'], weight: ['400', '500', '600'], display: 'swap', variable: '--font-text' });
+const pixel = localFont({ src: '../fonts/GeistPixel-Square.woff2', display: 'swap', variable: '--font-pixel', adjustFontFallback: false, fallback: ['ui-monospace', 'Menlo', 'monospace'] });
 
 const description = 'A fast Hacker News reader: Top, New, Best, Ask, Show and Jobs from the official API, with working pagination and a paper theme.';
 
@@ -19,16 +20,20 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image', creator: '@notjustadev', title: 'Hacker News Reader', description, images: ['og.png'] },
 };
 
-export const viewport: Viewport = { themeColor: '#f4f1e8' };
+export const viewport: Viewport = { themeColor: '#f2efe6' };
+
+/* Applies the saved theme before first paint so a dark-mode visitor never sees a paper flash. */
+const themeScript = `try{if(localStorage.getItem('hn-theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://hacker-news.firebaseio.com" />
         <link rel="preload" href="https://hacker-news.firebaseio.com/v0/topstories.json" as="fetch" crossOrigin="anonymous" />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${inter.className} ${serif.variable}`}>
+      <body className={`${grotesk.variable} ${pixel.variable}`}>
         <header className="hdr">
           <div className="wrap hdr-inner">
             <Link href="/" className="mark"><i>Y</i><span>Hacker News</span></Link>
