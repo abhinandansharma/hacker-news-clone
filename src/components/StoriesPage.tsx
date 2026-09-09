@@ -2,6 +2,7 @@
 
 import React, { Suspense, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Masthead from './Masthead';
 import StoryList from './StoryList';
 import { PAGE_SIZE, useStories, type Snapshot } from '@/hooks/useStories';
 import type { StoryType } from '@/types/hackernews';
@@ -19,20 +20,22 @@ function Inner({ type, baseUrl, snapshot }: { type: StoryType; baseUrl: string; 
     mounted.current = true;
   }, [page, type]);
 
-  if (error) {
-    return (
-      <div className="notice">
-        <p>Could not reach Hacker News ({error}).</p>
-        <button type="button" className="btn" onClick={() => location.reload()}>Try again</button>
-      </div>
-    );
-  }
   return (
-    <StoryList
-      stories={stories} loading={loading} totalPages={totalPages} currentPage={page} baseUrl={baseUrl} startRank={(page - 1) * PAGE_SIZE}
-      pendingCount={pending ? pending.filter((s) => !stories.some((c) => c.id === s.id)).length : 0}
-      hasPending={!!pending} onApplyPending={applyPending}
-    />
+    <>
+      <Masthead type={type} page={page} totalPages={totalPages} />
+      {error ? (
+        <div className="notice">
+          <p>Could not reach Hacker News ({error}).</p>
+          <button type="button" className="btn" onClick={() => location.reload()}>Try again</button>
+        </div>
+      ) : (
+        <StoryList
+          stories={stories} loading={loading} totalPages={totalPages} currentPage={page} baseUrl={baseUrl} startRank={(page - 1) * PAGE_SIZE}
+          pendingCount={pending ? pending.filter((s) => !stories.some((c) => c.id === s.id)).length : 0}
+          hasPending={!!pending} onApplyPending={applyPending}
+        />
+      )}
+    </>
   );
 }
 
@@ -40,7 +43,7 @@ function Inner({ type, baseUrl, snapshot }: { type: StoryType; baseUrl: string; 
 export default function StoriesPage(props: { type: StoryType; baseUrl: string; snapshot?: Snapshot }) {
   const fb = props.snapshot && props.snapshot.stories.length ? props.snapshot : { stories: [], totalPages: 1 };
   return (
-    <Suspense fallback={<StoryList stories={fb.stories} loading={fb.stories.length === 0} totalPages={fb.totalPages} currentPage={1} baseUrl={props.baseUrl} startRank={0} />}>
+    <Suspense fallback={<><Masthead type={props.type} page={1} totalPages={fb.totalPages} /><StoryList stories={fb.stories} loading={fb.stories.length === 0} totalPages={fb.totalPages} currentPage={1} baseUrl={props.baseUrl} startRank={0} /></>}>
       <Inner {...props} />
     </Suspense>
   );

@@ -21,6 +21,7 @@ interface Props {
 const SKELETON = 30;
 
 export default function StoryList({ stories, loading, totalPages, currentPage, baseUrl, startRank, pendingCount = 0, hasPending = false, onApplyPending }: Props) {
+  const maxScore = Math.max(1, ...stories.map((s) => s.score || 0));
   return (
     <>
       <div className="list-top" aria-live="polite">
@@ -39,7 +40,7 @@ export default function StoryList({ stories, loading, totalPages, currentPage, b
           </li>
         ))}
         {!loading && stories.length === 0 && <li className="notice">Nothing here yet.</li>}
-        {!loading && stories.map((story, i) => <StoryItem key={story.id} story={story} rank={startRank + i + 1} />)}
+        {!loading && stories.map((story, i) => <StoryItem key={story.id} story={story} rank={startRank + i + 1} share={(story.score || 0) / maxScore} />)}
       </ol>
       <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl={baseUrl} />
     </>
