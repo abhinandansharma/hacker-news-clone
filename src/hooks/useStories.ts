@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { fetchStories } from '@/lib/api';
+import { fetchStories, prefetchStories } from '@/lib/api';
 import type { Story, StoryType } from '@/types/hackernews';
 
 export const PAGE_SIZE = 30;
@@ -35,6 +35,7 @@ export function useStories(type: StoryType, page: number, snapshot?: Snapshot) {
         if (cancelled) return;
         setTotalPages(r.totalPages);
         setLoading(false);
+        if (page < r.totalPages) setTimeout(() => prefetchStories(type, page + 1, PAGE_SIZE), 800);
         if (!seeded || sameOrder(snapshot!.stories, r.stories)) { setStories(r.stories); return; }
         const live = new Map(r.stories.map((s) => [s.id, s]));
         setStories((cur) => cur.map((s) => live.get(s.id) ?? s));

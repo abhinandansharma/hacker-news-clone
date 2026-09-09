@@ -39,7 +39,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--orange); outlin
 .wrap { max-width: 60rem; margin: 0 auto; padding: 0 2rem; }
 
 /* header: the orange rule is Hacker News' own signature, kept as a thin line above a quiet paper header */
-.hdr { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 3px solid var(--orange); }
+/* solid, not blurred: a backdrop blur on a sticky bar repaints every scroll frame and made the page feel heavy */
+.hdr { position: sticky; top: 0; z-index: 20; background: var(--bg); border-top: 3px solid var(--orange); border-bottom: 1px solid var(--line); }
 .hdr-inner { display: flex; align-items: center; gap: 1.5rem; height: 4.5rem; }
 .mark { display: inline-flex; align-items: center; gap: 0.7rem; font-weight: 600; font-size: 1.1rem; letter-spacing: -0.01em; white-space: nowrap; color: var(--text); }
 .mark i { width: 1.65rem; height: 1.65rem; border-radius: 5px; background: var(--orange); color: #fff; display: inline-grid; place-items: center; font-style: normal; font-weight: 700; font-size: 1rem; }
@@ -66,7 +67,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--orange); outlin
 .list-top { position: fixed; bottom: 18px; left: 0; right: 0; z-index: 15; display: flex; justify-content: center; pointer-events: none; }
 .list-top > * { pointer-events: auto; }
 .list { list-style: none; margin: 0; padding: 1.5rem 0 0; }
-.item { display: grid; grid-template-columns: 4.5rem 1fr; gap: 0 0.75rem; padding: 1.1rem 0.75rem 1.1rem 0; border-bottom: 1px solid var(--line); transition: background-color 0.15s; }
+.item { display: grid; grid-template-columns: 4.5rem 1fr; gap: 0 0.75rem; padding: 1.1rem 0.75rem 1.1rem 0; border-bottom: 1px solid var(--line); }
 .item:hover .rank { color: var(--orange); }
 .rank { font-family: var(--font-pixel), ui-monospace, monospace; font-size: 2.4rem; line-height: 0.9; color: var(--text); text-align: right; padding: 0.1rem 0.25rem 0 0; transition: color 0.15s; }
 .body { min-width: 0; }
@@ -139,7 +140,7 @@ footer.ftr a:hover { color: var(--orange-text); }
   .pager-btn:last-child { grid-column: 2; justify-self: end; }
   footer.ftr { padding-bottom: 5rem; }
 }
-@media (prefers-reduced-motion: reduce) { .tab::after, .item, .btn, .title { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .tab::after, .rank, .btn, .title { transition: none; } }
 
 /* made-by badge (identical across every project; keep in sync) */
 .made-by { position: fixed; left: 18px; bottom: 18px; z-index: 950; display: inline-flex; align-items: center; gap: 10px; padding: 6px 12px 6px 6px; border-radius: 999px; background: #0b0b0b; color: #f1ede4; border: 1px solid #262626; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 400; line-height: 1; letter-spacing: 0; text-decoration: none; transition: background-color 0.2s, opacity 0.3s; }

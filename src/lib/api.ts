@@ -27,15 +27,17 @@ export async function fetchStoryIds(type: StoryType): Promise<number[]> {
   return ids;
 }
 
-/** One page of a feed, fetched in small parallel batches. Also returns the page count for the feed. */
+/** One page of a feed, its items fetched in parallel. Also returns the page count for the feed. */
 export async function fetchStories(type: StoryType, page: number, limit = 30): Promise<{ stories: Story[]; totalPages: number }> {
   const ids = await fetchStoryIds(type);
   const totalPages = Math.max(1, Math.ceil(ids.length / limit));
   const pageIds = ids.slice((page - 1) * limit, page * limit);
-  const stories: Story[] = [];
-  for (let i = 0; i < pageIds.length; i += 10) {
-    const batch = await Promise.all(pageIds.slice(i, i + 10).map((id) => fetchItem(id).catch(() => null)));
-    stories.push(...batch.filter((s): s is Story => !!s && (s.type === 'story' || s.type === 'job')));
-  }
+  const items = await Promise.all(pageIds.map((id) => fetchItem(id).catch(() => null)));
+  const stories = items.filter((s): s is Story => !!s && (s.type === 'story' || s.type === 'job'));
   return { stories, totalPages };
+}
+
+/** Warms the item cache for a page so that navigating to it is instant. Errors are ignored. */
+export function prefetchStories(type: StoryType, page: number, limit = 30): void {
+  fetchStories(type, page, limit).catch(() => {});
 }
