@@ -138,10 +138,10 @@ footer.ftr a:hover { color: var(--orange-text); }
   .domain { display: block; margin: 0.1rem 0 0; }
   /* three rows: page numbers, then Previous and Next side by side; the single row overflowed at phone widths */
   .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .pager-pages { grid-column: 1 / -1; justify-content: center; flex-wrap: wrap; }
-  .pager-btn { justify-content: center; padding: 0 0.8rem; }
-  .pager-btn:last-child { justify-self: end; }
-  .pager-btn:first-child { justify-self: start; }
+  .pager-pages { grid-row: 1; grid-column: 1 / -1; justify-content: center; flex-wrap: wrap; }
+  .pager-btn { grid-row: 2; justify-content: center; padding: 0 0.8rem; }
+  .pager-btn:first-child { grid-column: 1; justify-self: start; }
+  .pager-btn:last-child { grid-column: 2; justify-self: end; }
   footer.ftr { padding-bottom: 5rem; }
 }
 @media (prefers-reduced-motion: reduce) { .tab::after, .item, .btn, .title { transition: none; } }
